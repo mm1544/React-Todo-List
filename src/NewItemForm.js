@@ -9,6 +9,7 @@ class NewItemForm extends Component {
     }
 
     handleSubmit(evt) {
+        // prevents relouding the page after submiting
         evt.preventDefault();
         this.props.addItem(this.state);
         // resetting state to an empty string values
@@ -26,16 +27,17 @@ class NewItemForm extends Component {
         return (
             <form onSubmit={this.handleSubmit}>
                 <div>
-                    <label htmlFor='content'>Task: </label>
+                    <label htmlFor='content'>New Task: </label>
                     <input 
                         type='text'
+                        placeholder='eg. Read the book'
                         id='content'
                         name='content'
                         value={this.state.content}
                         onChange={this.handleChange}
                     />
                 </div>
-                <button>Add New Task</button>
+                <button>Add Task</button>
             </form>
         )
     }

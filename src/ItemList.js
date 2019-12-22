@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import Item from './Item'
 import NewItemForm from './NewItemForm'
-// librarry to generate IDs
+// librarry to generate IDs (Node module)
 import uuid from 'uuid/v4';
 
 class ItemList extends Component {
@@ -13,6 +13,7 @@ class ItemList extends Component {
         this.addItem = this.addItem.bind(this);
         // when using arrow f-ion, don't need this binding
         this.removeItem = this.removeItem.bind(this);
+        this.updateItem = this.updateItem.bind(this);
     }
 
     addItem(item){
@@ -34,6 +35,21 @@ class ItemList extends Component {
         }));
     }
 
+    // 
+    updateItem(id, updatedText) {
+        const updatedTodos = this.state.items.map(
+            item => {
+                if(item.id === id) {
+                    // will return existing item, but with updated task 
+                    // (it will overwrite the task)
+                    return {...item, content: updatedText}
+                }
+                return item; // otherwise it will return unchanged "item"
+            });
+            // we make the new arry and set it tobe "items" array...
+            this.setState({items: updatedTodos}); 
+    }
+
     renderItems() {
         return (
             <div>
@@ -45,9 +61,10 @@ class ItemList extends Component {
                         // and creating a NEW function inline:
                         // remove={() => this.removeBox(box.id)}
 
-                        id={item.id} 
                         key={item.id} 
+                        id={item.id} 
                         content={item.content} 
+                        updateItem = {this.updateItem}
                     />
                 ))}
             </div> 
@@ -56,10 +73,12 @@ class ItemList extends Component {
     
     render() {
         return (
-            <div className="ItemList">
+            <div>
                 <h2>Todo List</h2>
                 <NewItemForm addItem={this.addItem} />
-                {this.renderItems()}
+                <ul>
+                    {this.renderItems()}
+                </ul>
             </div>
 
         )
