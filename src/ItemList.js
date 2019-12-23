@@ -3,6 +3,7 @@ import Item from './Item'
 import NewItemForm from './NewItemForm'
 // librarry to generate IDs (Node module)
 import uuid from 'uuid/v4';
+import './ItemList.css';
 
 class ItemList extends Component {
     constructor(props){
@@ -14,10 +15,11 @@ class ItemList extends Component {
         // when using arrow f-ion, don't need this binding
         this.removeItem = this.removeItem.bind(this);
         this.updateItem = this.updateItem.bind(this);
+        this.toggleCompletion = this.toggleCompletion.bind(this);
     }
 
     addItem(item){
-        let newItem = {...item, id: uuid()};
+        let newItem = {...item, id: uuid(), completed: false};
         this.setState(st => ({
             items: [...st.items, newItem] //  "existing 'boxes' == [...st.boxes] " + newBox
         }));
@@ -46,7 +48,21 @@ class ItemList extends Component {
                 }
                 return item; // otherwise it will return unchanged "item"
             });
-            // we make the new arry and set it tobe "items" array...
+            // we made a new arry and set it to be "items" array...
+            this.setState({items: updatedTodos}); 
+    }
+
+    toggleCompletion(id) {
+        const updatedTodos = this.state.items.map(
+            item => {
+                if(item.id === id) {
+                    // will return existing item, but with updated task 
+                    // (it will overwrite the task)
+                    return {...item, completed: !item.completed}
+                }
+                return item; // otherwise it will return unchanged "item"
+            });
+            // we made a new arry and set it to be "items" array...
             this.setState({items: updatedTodos}); 
     }
 
@@ -65,6 +81,8 @@ class ItemList extends Component {
                         id={item.id} 
                         content={item.content} 
                         updateItem = {this.updateItem}
+                        completed = {item.completed}
+                        toggleCompletion={this.toggleCompletion}
                     />
                 ))}
             </div> 
@@ -73,12 +91,12 @@ class ItemList extends Component {
     
     render() {
         return (
-            <div>
-                <h2>Todo List</h2>
-                <NewItemForm addItem={this.addItem} />
+            <div className="TodoList">
+                <h1>Todo List <span>A Simple React Todo List App</span></h1>
                 <ul>
                     {this.renderItems()}
                 </ul>
+                <NewItemForm addItem={this.addItem} />
             </div>
 
         )

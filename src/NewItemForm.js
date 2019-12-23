@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import './NewItemForm.css'
 
 class NewItemForm extends Component {
     constructor(props) {
@@ -14,7 +15,6 @@ class NewItemForm extends Component {
         this.props.addItem(this.state);
         // resetting state to an empty string values
         this.setState({content: ""});
-        
     }
 
     handleChange(evt) {
@@ -25,7 +25,7 @@ class NewItemForm extends Component {
 
     render() {
         return (
-            <form onSubmit={this.handleSubmit}>
+            <form className="NewTodoForm" onSubmit={this.handleSubmit}>
                 <div>
                     <label htmlFor='content'>New Task: </label>
                     <input 

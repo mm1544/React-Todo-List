@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import './Item.css'
 
 class Item extends Component {
     constructor(props){
@@ -13,6 +14,7 @@ class Item extends Component {
         this.toggleForm = this.toggleForm.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.handleUpdate = this.handleUpdate.bind(this);
+        this.handleToggleCompletion = this.handleToggleCompletion.bind(this);
     }
 
     handleRemove(evt) {
@@ -36,22 +38,31 @@ class Item extends Component {
         });
     }
 
+    handleToggleCompletion(evt){
+        this.props.toggleCompletion(this.props.id);
+        console.log("Executing handleToggleCompletion ");
+    }
+
     render() {
         let result;
         let buttonsVar = (
-            <div>
-                <button onClick={this.handleRemove}>Delete</button>
+            <div className="Todo-buttons">
+                <button onClick={this.handleRemove}>
+                    <i class='fas fa-trash'></i>
+                </button>
                     {/* #v2 When using arrow function to pass a method removeItem() */}
                     {/* <button onClick={this.props.remove}>X</button> */}
-                 <button onClick={this.toggleForm}>Edit</button>
+                 <button onClick={this.toggleForm}>
+                     <i class='fas fa-pen'></i>
+                 </button>
             </div>
         )
         {/* depending on whether "edit" button is clicked,
                 we will render a task content, or an editing form */}
         if(this.state.isEditing) {
             result = (
-                <div>
-                    <form onSubmit={this.handleUpdate}>
+                <div className="Todo">
+                    <form className="Todo-edit-form" onSubmit={this.handleUpdate}>
                         <input 
                             type="text" 
                             value={this.state.content} 
@@ -64,8 +75,11 @@ class Item extends Component {
             )
         } else {
             result = (
-                <div>
-                    <li className="Item">{this.props.content}</li>
+                <div className="Todo"> 
+                    <li 
+                        onClick={this.handleToggleCompletion} 
+                        className={this.props.completed ? "Todo-task completed" : "Todo-task"}
+                    >{this.props.content}</li>
                     {buttonsVar}
                 </div>
             )
